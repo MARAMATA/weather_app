@@ -220,8 +220,8 @@ Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de 
 **Maramata DIOP**
 - 🎓 Étudiant MDSIA/ISI 2025
 - 📍 Dakar, Sénégal
-- 📧 Email: [votre-email@example.com]
-- 🔗 LinkedIn: [Votre profil LinkedIn]
+- 📧 Email: maramatad@gmail.com
+- 🔗 LinkedIn: https://www.linkedin.com/in/maramata-diop/
 
 ## 🙏 Remerciements
 
