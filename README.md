@@ -284,8 +284,8 @@ Ce projet est sous **licence MIT**. Voir [LICENSE](LICENSE) pour plus de détail
 
 🎓 **Formation** : Master en Développement et Sécurité des Systèmes d'Information  
 📍 **Localisation** : Dakar, Sénégal 🇸🇳  
-📧 **Email** : [maramata.diop@etudiant.com]  
-💼 **LinkedIn** : [linkedin.com/in/maramata-diop]  
+📧 **Email** : maramatad@gmail.com 
+💼 **LinkedIn** : [[linkedin.com/in/maramata-diop  ](https://www.linkedin.com/in/maramata-diop/)
 🐙 **GitHub** : [@MARAMATA](https://github.com/MARAMATA)
 
 </div>
@@ -297,8 +297,7 @@ Ce projet est sous **licence MIT**. Voir [LICENSE](LICENSE) pour plus de détail
 - 🙏 **WeatherAPI.com** pour l'API météorologique gratuite
 - 🗺️ **OpenStreetMap** pour les cartes libres et collaboratives
 - 🚀 **Flutter Team** pour ce framework exceptionnel
-- 🇸🇳 **Communauté tech sénégalaise** pour l'inspiration
-- 🎓 **MDSIA/ISI** pour l'encadrement académique
+
 
 ---
 
@@ -307,8 +306,7 @@ Ce projet est sous **licence MIT**. Voir [LICENSE](LICENSE) pour plus de détail
 - 📚 [Documentation Flutter](https://docs.flutter.dev/)
 - 🌤️ [WeatherAPI Documentation](https://www.weatherapi.com/docs/)
 - 🗺️ [OpenStreetMap](https://www.openstreetmap.org/)
-- 📦 [Pub.dev - Packages Dart](https://pub.dev/)
-- 🇸🇳 [Office du Tourisme Sénégal](https://www.senegal-tourism.com/)
+
 
 ---
 
