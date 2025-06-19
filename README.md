@@ -282,7 +282,7 @@ Ce projet est sous **licence MIT**. Voir [LICENSE](LICENSE) pour plus de détail
 ### **Maramata DIOP**
 *Étudiant MDSIA/ISI 2025 - Développeur Flutter*
 
-🎓 **Formation** : Master en Développement et Sécurité des Systèmes d'Information  
+🎓 **Formation** : Master en Data Science et Intelligence Artificielle 
 📍 **Localisation** : Dakar, Sénégal 🇸🇳  
 📧 **Email** : maramatad@gmail.com 
 💼 **LinkedIn** : [[linkedin.com/in/maramata-diop  ](https://www.linkedin.com/in/maramata-diop/)
