@@ -10,8 +10,7 @@
 #endif
 #endif
 
-#import "LocationPlugin.h"
 
-FOUNDATION_EXPORT double locationVersionNumber;
-FOUNDATION_EXPORT const unsigned char locationVersionString[];
+FOUNDATION_EXPORT double url_launcher_iosVersionNumber;
+FOUNDATION_EXPORT const unsigned char url_launcher_iosVersionString[];
 

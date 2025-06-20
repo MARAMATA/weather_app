@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "74373FFB1ED73C7A6F8F21C8476597BA"
-               BuildableName = "location.framework"
-               BlueprintName = "location"
+               BlueprintIdentifier = "43BE97C40504244259CF3C1D21E7EDB5"
+               BuildableName = "url_launcher_ios_privacy.bundle"
+               BlueprintName = "url_launcher_ios-url_launcher_ios_privacy"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A5EEC7C2AA5BC7C67CFA2C7578AB62C7"
-               BuildableName = "GoogleMapsUtils.framework"
-               BlueprintName = "Google-Maps-iOS-Utils"
+               BlueprintIdentifier = "CACE6618E7996464E38687E13F67D945"
+               BuildableName = "path_provider_foundation_privacy.bundle"
+               BlueprintName = "path_provider_foundation-path_provider_foundation_privacy"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

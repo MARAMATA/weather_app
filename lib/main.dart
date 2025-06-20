@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'screens/home_screen.dart';
 
 void main() async {
   // Ensure Flutter binding is initialized before running the app
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialiser dotenv AVANT de lancer l'app
+  try {
+    await dotenv.load(fileName: ".env");
+    print('✅ Configuration .env chargée');
+  } catch (e) {
+    print('⚠️ .env non trouvé, utilisation de la clé par défaut');
+  }
 
   runApp(MyApp());
 }
@@ -36,6 +45,13 @@ class _MyAppState extends State<MyApp> {
           isDarkMode: _themeMode == ThemeMode.dark
       ),
       debugShowCheckedModeBanner: false,
+      // Désactiver temporairement les erreurs de débordement pour identifier la source
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(1.0)),
+          child: child!,
+        );
+      },
     );
   }
 }

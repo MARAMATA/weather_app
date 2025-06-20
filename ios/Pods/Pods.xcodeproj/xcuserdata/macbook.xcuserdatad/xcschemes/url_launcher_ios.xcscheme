@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AF821D38A6361C7786A4D6485E5A4EAF"
-               BuildableName = "google_maps_flutter_ios.framework"
-               BlueprintName = "google_maps_flutter_ios"
+               BlueprintIdentifier = "DF45E85925DF410BE416B32171F59C1F"
+               BuildableName = "url_launcher_ios.framework"
+               BlueprintName = "url_launcher_ios"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

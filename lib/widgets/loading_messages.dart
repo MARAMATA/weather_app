@@ -86,7 +86,7 @@ class _LoadingMessagesState extends State<LoadingMessages>
     final isDark = widget.isDarkMode ?? (theme.brightness == Brightness.dark);
 
     return Container(
-      height: 80,
+      height: 70, // Augmenté de 80 à 70
       child: AnimatedBuilder(
         animation: _animationController,
         builder: (context, child) {
@@ -95,12 +95,12 @@ class _LoadingMessagesState extends State<LoadingMessages>
             child: FadeTransition(
               opacity: _fadeAnimation,
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8), // Réduit le padding
                 decoration: BoxDecoration(
                   color: isDark
                       ? Colors.grey.shade800.withOpacity(0.9)
                       : Colors.white.withOpacity(0.9),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(16), // Réduit de 20 à 16
                   border: Border.all(
                     color: isDark
                         ? Colors.blue.shade600.withOpacity(0.5)
@@ -122,17 +122,21 @@ class _LoadingMessagesState extends State<LoadingMessages>
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     // Message principal
-                    Text(
-                      messages[currentIndex],
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: isDark ? Colors.blue.shade300 : Colors.blue.shade700,
+                    Flexible( // Ajout de Flexible pour éviter l'overflow
+                      child: Text(
+                        messages[currentIndex],
+                        style: TextStyle(
+                          fontSize: 14, // Réduit de 16 à 14
+                          fontWeight: FontWeight.w600,
+                          color: isDark ? Colors.blue.shade300 : Colors.blue.shade700,
+                        ),
+                        textAlign: TextAlign.center,
+                        maxLines: 2, // Limite à 2 lignes
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      textAlign: TextAlign.center,
                     ),
 
-                    SizedBox(height: 8),
+                    SizedBox(height: 6), // Réduit de 8 à 6
 
                     // Indicateur de progression en points
                     Row(
@@ -141,8 +145,8 @@ class _LoadingMessagesState extends State<LoadingMessages>
                         return AnimatedContainer(
                           duration: Duration(milliseconds: 300),
                           margin: EdgeInsets.symmetric(horizontal: 2),
-                          width: 6,
-                          height: 6,
+                          width: 5, // Réduit de 6 à 5
+                          height: 5,
                           decoration: BoxDecoration(
                             color: _getLoadingDotColor(index, isDark),
                             shape: BoxShape.circle,

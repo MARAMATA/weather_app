@@ -395,10 +395,11 @@ class _MainScreenState extends State<MainScreen> {
   Widget _buildWeatherView(bool isDark) {
     return Column(
       children: [
+        // Message de succès corrigé
         Container(
           width: double.infinity,
-          padding: EdgeInsets.all(16),
-          margin: EdgeInsets.all(16),
+          padding: EdgeInsets.all(12),
+          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
             color: isDark ? Colors.green.shade800 : Colors.green.shade100,
             borderRadius: BorderRadius.circular(10),
@@ -409,11 +410,11 @@ class _MainScreenState extends State<MainScreen> {
           child: Row(
             children: [
               Container(
-                width: 30,
-                height: 30,
-                margin: EdgeInsets.only(right: 10),
+                width: 24,
+                height: 24,
+                margin: EdgeInsets.only(right: 8),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(6),
+                  borderRadius: BorderRadius.circular(4),
                   child: Image.asset(
                     'assets/images/logo.png',
                     fit: BoxFit.contain,
@@ -421,7 +422,7 @@ class _MainScreenState extends State<MainScreen> {
                       return Icon(
                         Icons.check_circle,
                         color: isDark ? Colors.green.shade400 : Colors.green,
-                        size: 30,
+                        size: 24,
                       );
                     },
                   ),
@@ -431,16 +432,19 @@ class _MainScreenState extends State<MainScreen> {
                 child: Text(
                   '💥 BOOM ! Données météo chargées avec succès !',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: isDark ? Colors.green.shade200 : Colors.green.shade800,
                   ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
           ),
         ),
 
+        // Liste des villes corrigée
         Expanded(
           child: ListView.builder(
             padding: EdgeInsets.symmetric(horizontal: 16),
@@ -470,14 +474,14 @@ class _MainScreenState extends State<MainScreen> {
                             'lng': weather.longitude,
                           },
                           toggleTheme: widget.toggleTheme,
-                          isDarkMode: widget.isDarkMode,
+                          isDarkMode: isDark,
                         ),
                       ),
                     );
                   },
                   borderRadius: BorderRadius.circular(15),
                   child: Container(
-                    padding: EdgeInsets.all(16),
+                    padding: EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       gradient: LinearGradient(
@@ -540,25 +544,29 @@ class _MainScreenState extends State<MainScreen> {
                               Text(
                                 weather.cityName,
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                   color: isDark
                                       ? Colors.blue.shade300
                                       : Colors.blue.shade800,
                                 ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
                               SizedBox(height: 4),
                               Text(
                                 weather.description.toUpperCase(),
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 11,
                                   color: isDark
                                       ? Colors.grey.shade400
                                       : Colors.grey.shade600,
                                   fontWeight: FontWeight.w500,
                                 ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              SizedBox(height: 8),
+                              SizedBox(height: 6),
                               Row(
                                 children: [
                                   Icon(Icons.thermostat, size: 16, color: Colors.red),
@@ -566,18 +574,18 @@ class _MainScreenState extends State<MainScreen> {
                                   Text(
                                     '${weather.temperature.toInt()}°C',
                                     style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                       color: isDark ? Colors.white : Colors.black,
                                     ),
                                   ),
-                                  SizedBox(width: 20),
+                                  SizedBox(width: 16),
                                   Icon(Icons.opacity, size: 16, color: Colors.blue),
                                   SizedBox(width: 4),
                                   Text(
                                     '${weather.humidity.toInt()}%',
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 13,
                                       color: isDark ? Colors.white70 : Colors.black87,
                                     ),
                                   ),

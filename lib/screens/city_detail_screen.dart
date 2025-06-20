@@ -29,6 +29,7 @@ class _CityDetailScreenState extends State<CityDetailScreen>
 
   final MapController _mapController = MapController();
   bool isMapLoaded = false;
+  bool showAllDetails = true; // Afficher tous les détails par défaut
 
   // Coordonnées des villes sénégalaises 🇸🇳
   final Map<String, LatLng> cityCoordinates = {
@@ -140,7 +141,7 @@ class _CityDetailScreenState extends State<CityDetailScreen>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark; // Utiliser le thème du contexte
+    final isDark = theme.brightness == Brightness.dark;
     final cityName = widget.cityData['city'];
     final cityLocation = cityCoordinates[cityName] ?? LatLng(14.6928, -17.4467);
 
@@ -188,9 +189,9 @@ class _CityDetailScreenState extends State<CityDetailScreen>
               position: _slideAnimation,
               child: Column(
                 children: [
-                  // Section informations météo détaillées
+                  // Section informations météo avec indicateur de contenu
                   Expanded(
-                    flex: 2,
+                    flex: showAllDetails ? 3 : 2,
                     child: Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
@@ -201,13 +202,103 @@ class _CityDetailScreenState extends State<CityDetailScreen>
                           end: Alignment.bottomCenter,
                         ),
                       ),
-                      child: _buildWeatherDetails(isDark),
+                      child: Column(
+                        children: [
+                          // Header avec température principale et bouton d'expansion
+                          Container(
+                            padding: EdgeInsets.all(16),
+                            child: Row(
+                              children: [
+                                // Température et météo principale
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        _getWeatherIcon(widget.cityData['desc']),
+                                        size: 50,
+                                        color: isDark ? Colors.orange.shade400 : Colors.orange.shade600,
+                                      ),
+                                      SizedBox(width: 16),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '${widget.cityData['temp']}°C',
+                                            style: TextStyle(
+                                              fontSize: 32,
+                                              fontWeight: FontWeight.bold,
+                                              color: isDark ? Colors.white : Colors.black,
+                                            ),
+                                          ),
+                                          Text(
+                                            widget.cityData['desc'].toString(),
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: isDark ? Colors.white70 : Colors.grey.shade700,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                // Aperçu rapide des autres données
+                                Column(
+                                  children: [
+                                    _buildQuickInfoCard('💧', '${widget.cityData['humidity']}%', isDark),
+                                    SizedBox(height: 8),
+                                    _buildQuickInfoCard('🌬️', '${_getRandomWind()} km/h', isDark),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          // Bouton pour afficher/masquer les détails
+                          Container(
+                            width: double.infinity,
+                            margin: EdgeInsets.symmetric(horizontal: 16),
+                            child: ElevatedButton.icon(
+                              onPressed: () {
+                                setState(() {
+                                  showAllDetails = !showAllDetails;
+                                });
+                              },
+                              icon: Icon(
+                                showAllDetails ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                                size: 20,
+                              ),
+                              label: Text(
+                                showAllDetails ? 'Masquer les détails' : 'Voir tous les détails météo',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: isDark ? Colors.grey.shade700 : Colors.grey.shade200,
+                                foregroundColor: isDark ? Colors.white : Colors.black,
+                                padding: EdgeInsets.symmetric(vertical: 8),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                elevation: 2,
+                              ),
+                            ),
+                          ),
+
+                          // Détails météo (conditionnels)
+                          if (showAllDetails) ...[
+                            SizedBox(height: 16),
+                            Expanded(
+                              child: _buildWeatherDetails(isDark),
+                            ),
+                          ],
+                        ],
+                      ),
                     ),
                   ),
 
                   // Section OpenStreetMap
                   Expanded(
-                    flex: 3,
+                    flex: showAllDetails ? 2 : 3,
                     child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       decoration: BoxDecoration(
@@ -245,11 +336,11 @@ class _CityDetailScreenState extends State<CityDetailScreen>
                                 // Couche de tuiles OpenStreetMap
                                 TileLayer(
                                   urlTemplate: isDark
-                                      ? 'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png'
+                                      ? 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png'
                                       : 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                                   userAgentPackageName: 'com.example.weather_app',
                                   maxZoom: 19,
-                                  backgroundColor: isDark ? Colors.grey.shade900 : Colors.grey.shade200,
+                                  subdomains: const ['a', 'b', 'c', 'd'],
                                 ),
 
                                 // Marqueurs des villes
@@ -466,7 +557,7 @@ class _CityDetailScreenState extends State<CityDetailScreen>
                           child: ElevatedButton.icon(
                             onPressed: () => _showCityInfo(context, isDark),
                             icon: Icon(Icons.info),
-                            label: Text('Infos Détaillées'),
+                            label: Text('Infos Ville'),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.orange.shade600,
                               foregroundColor: Colors.white,
@@ -507,6 +598,38 @@ class _CityDetailScreenState extends State<CityDetailScreen>
     );
   }
 
+  Widget _buildQuickInfoCard(String emoji, String value, bool isDark) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: isDark ? Colors.grey.shade700 : Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 2,
+            offset: Offset(0, 1),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(emoji, style: TextStyle(fontSize: 12)),
+          SizedBox(width: 4),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: isDark ? Colors.white : Colors.black,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _centerOnCity(LatLng location) {
     _mapController.move(location, 14.0);
     ScaffoldMessenger.of(context).showSnackBar(
@@ -522,7 +645,7 @@ class _CityDetailScreenState extends State<CityDetailScreen>
   void _showMapTapInfo(LatLng point, bool isDark) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (BuildContext context) => AlertDialog(
         backgroundColor: isDark ? Colors.grey.shade800 : Colors.white,
         title: Text(
           '📍 Position sur la carte',
@@ -558,97 +681,21 @@ class _CityDetailScreenState extends State<CityDetailScreen>
   }
 
   Widget _buildWeatherDetails(bool isDark) {
-    final cityData = widget.cityData;
-
     return SingleChildScrollView(
-      padding: EdgeInsets.all(16),
+      padding: EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
-          // Carte principale avec température
-          Card(
-            elevation: 12,
-            color: isDark ? Colors.grey.shade800 : Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
-            ),
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(28),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                gradient: LinearGradient(
-                  colors: isDark
-                      ? [Colors.blue.shade800, Colors.purple.shade800]
-                      : [Colors.orange.shade400, Colors.red.shade500],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: (isDark ? Colors.blue : Colors.orange).withOpacity(0.3),
-                    blurRadius: 10,
-                    offset: Offset(0, 5),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  Icon(
-                    _getWeatherIcon(cityData['desc']),
-                    size: 90,
-                    color: Colors.white,
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    '${cityData['temp']}°C',
-                    style: TextStyle(
-                      fontSize: 52,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 10.0,
-                          color: Colors.black26,
-                          offset: Offset(2.0, 2.0),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Text(
-                    cityData['desc'].toString().toUpperCase(),
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white.withOpacity(0.95),
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1.2,
-                    ),
-                  ),
-                  SizedBox(height: 12),
-                  Text(
-                    '${cityInfo[cityData['city']]?['region'] ?? 'Sénégal'}',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.white.withOpacity(0.8),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          SizedBox(height: 24),
-
-          // Détails météorologiques
+          // Titre des détails météo
           Text(
-            '🌡️ Conditions Météorologiques',
+            '🌡️ Détails Météorologiques',
             style: TextStyle(
-              fontSize: 22,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
               color: isDark ? Colors.orange.shade400 : Colors.orange.shade800,
             ),
           ),
 
-          SizedBox(height: 20),
+          SizedBox(height: 16),
 
           // Grille avec les détails
           GridView.count(
@@ -656,15 +703,15 @@ class _CityDetailScreenState extends State<CityDetailScreen>
             physics: NeverScrollableScrollPhysics(),
             crossAxisCount: 2,
             childAspectRatio: 1.2,
-            crossAxisSpacing: 14,
-            mainAxisSpacing: 14,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
             children: [
               _buildDetailCard(
                 icon: Icons.opacity,
                 title: 'Humidité',
-                value: '${cityData['humidity']}%',
+                value: '${widget.cityData['humidity']}%',
                 color: Colors.blue,
-                subtitle: _getHumidityStatus(cityData['humidity']),
+                subtitle: _getHumidityStatus(widget.cityData['humidity']),
                 isDark: isDark,
               ),
               _buildDetailCard(
@@ -707,15 +754,15 @@ class _CityDetailScreenState extends State<CityDetailScreen>
     required bool isDark,
   }) {
     return Card(
-      elevation: 8,
+      elevation: 6,
       color: isDark ? Colors.grey.shade800 : Colors.white,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Container(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
           gradient: LinearGradient(
             colors: isDark
                 ? [color.withOpacity(0.2), Colors.grey.shade800]
@@ -727,12 +774,12 @@ class _CityDetailScreenState extends State<CityDetailScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 36, color: color),
-            SizedBox(height: 8),
+            Icon(icon, size: 28, color: color),
+            SizedBox(height: 6),
             Text(
               title,
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 12,
                 fontWeight: FontWeight.w600,
                 color: isDark ? Colors.white70 : Colors.grey.shade700,
               ),
@@ -741,7 +788,7 @@ class _CityDetailScreenState extends State<CityDetailScreen>
             Text(
               value,
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: color,
               ),
@@ -751,7 +798,7 @@ class _CityDetailScreenState extends State<CityDetailScreen>
               Text(
                 subtitle,
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: 9,
                   color: isDark ? Colors.white54 : Colors.grey.shade600,
                 ),
                 textAlign: TextAlign.center,
@@ -807,7 +854,7 @@ class _CityDetailScreenState extends State<CityDetailScreen>
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       isScrollControlled: true,
-      builder: (context) => Container(
+      builder: (BuildContext context) => Container(
         padding: EdgeInsets.all(20),
         height: MediaQuery.of(context).size.height * 0.6,
         child: Column(
